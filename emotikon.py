@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-#	Käsurealt lugemine
+#	Käsurealt argumentide lugemine
 import argparse
+#	Standardsisendi lugemine
+import sys
 #	CSV library
 import csv
 #	Regex library[()]*
@@ -23,10 +25,6 @@ import re
 
 # f_input = open('//home//ando//Desktop//loputoo//trunk//puhtam_xml_ando//foorumid/Arvutid_valiidne.xml','r')
 # Failist loetakse mustreid järjekorras, mis failis on toodud
-# Märgend, mis peab olema rea alguses, kust
-# emotikone tuvastama hakatakse
-lineMarker = re.compile("<tuvasta_keel>.*")
-
 
 # Funktsioon mustrite lugemiseks failist
 def readPatternsFromTSV(input_dir):
@@ -45,44 +43,55 @@ def readPatternsFromTSV(input_dir):
 				return patternPairs
 		return patternPairs
 
-
 def main():
-	
-	# Käsurealt antud parameetri tuvastamine
+	# Käsureaparameetri lugemine
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-i','--input'),
-
+	parser.add_argument('-i','--input')
+	parser.add_argument('-t','--type')
 	options = parser.parse_args();
-	f_input = open(options.input, 'r')
-	
-	output = ''
+	# Kui käsurealt parameetrit ei tulnud, kuula standardsisendit
+	if(options.input != None):
+		f_input = open(options.input, 'r')
+		print("Inputfile")
+	else:
+# 		f_input = sys.stdin
+		f_input = open("//home//ando//Desktop//emoticon//test", 'r',newline='')
+		print("Stdin")
+	if(options.type == "frm"):
+		# Märgend, mis peab olema rea alguses, kust
+		# emotikone tuvastama hakatakse
+		lineMarker = re.compile("<tuvasta_keel>.*")
+	else:
+		# Kõik read tuleb läbi vaadata
+		processAll = True
+
+
+	# Mustrifailide avamine
+	arPatterns	= readPatternsFromTSV('//home//ando//Desktop//emoticon//Patterns//patterns.tsv')
+	arPatterns1	= readPatternsFromTSV('//home//ando//Desktop//emoticon//Patterns//patterns.1.tsv')
+
 	for row in f_input:
 
-	#	Kontrollib, kas rida algab rea alguse märgendiga üldse
-	#	Esmalt loeb failist mustrid massiivi, 
-	#	seejärel rakendab ükshaaval pärast eelmise mustri töö lõppu.
-	#	Kui ei alga soovitud sümboliga, siis kirjutab rea kohe ära
-
-	#	Kirjuta subn-iks üle
-	
-		if (lineMarker.match(row) != None):
-			alteredRow	= row
-
-			arPatterns	= readPatternsFromTSV('//home//ando//Desktop//emoticon//Patterns//patterns.tsv')
+		#	Kontrollib, kas rida algab rea alguse märgendiga üldse
+		#	Mustrid rakendatakse järjestikku pärast eelmise mustri töö lõppu.
+		if (processAll):
 			for pair in arPatterns:
-				alteredRow = pair[0].sub(pair[1],alteredRow, count=0)
-
-			#	Asenda tühikud vahepeal 
-			alteredRow = re.sub(' +',' ', alteredRow)
-			arPatterns	= []
-			arPatterns	= readPatternsFromTSV('//home//ando//Desktop//emoticon//Patterns//patterns.1.tsv')
-
-#			for pair in arPatterns:
-#				alteredRow = pair[0].sub(pair[1],alteredRow, count=0)
-			
-			output += alteredRow
+				row = pair[0].sub(pair[1],row, count=0)
+			row = re.sub(' +',' ', row)
+			for pair in arPatterns:
+				row = pair[0].sub(pair[1],row, count=0)
+			print(row, end='') # saadetakse stdout'i
 		else:
-			output += row
-	print(output)
-
+			if (lineMarker.match(row) != None):
+				#	TODO - Kirjuta subn variant ka
+				for pair in arPatterns:
+					row = pair[0].sub(pair[1],row, count=0)
+				# 	Asenda topelttühikud vahepeal 
+				row = re.sub(' +',' ', row)
+				for pair in arPatterns:
+					row = pair[0].sub(pair[1],row, count=0)
+				print(row) # saadetakse stdout'i
+			else:
+			#	Kui ei alga soovitud sümboliga, siis kirjutab rea kohe ära
+				print(row)
 main()

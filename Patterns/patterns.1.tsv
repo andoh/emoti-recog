@@ -1,0 +1,4 @@
+"(&[lg]t) <emotikon> ([^<>]*) </emotikon>"	"\g<1>\g<2>"
+"(&amp) <emotikon> ([^<>]*) </emotikon>"	"\g<1>\g<2>"
+"(&atmark) <emotikon> ([^<>]*) </emotikon>"	"\g<1>\g<2>"
+"(&\#[1234567890][1234567890]*) <emotikon> ([^<>]*) </emotikon>"	"\g<1>\g<2>"

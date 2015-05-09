@@ -1,0 +1,17 @@
+"([:;][=-]*[()\[\]DpPoOsS\{\}]+) "	" <emotikon> \g<1> </emotikon> "
+"( [:;,][-=]*[\[\]()DPpoOsS\{\}]+)([?!\.])"	" <emotikon> \g<1> </emotikon> \g<2>" 
+"([^_:;])(=[()\]\[]+) "	"\g<1> <emotikon> \g<2> </emotikon> "
+"([^_])(&gt_semikoolon_)([:;]*=[)( ]*[\]\[)(DPpoO]) "	"\g<1> <emotikon> \g<2>\g<3> </emotikon> "
+"( [:;,]) ([\[\]()DPpoOsS\{\}]{1}) "	" <emotikon> \g<1>\g<2> </emotikon> "
+"([^ ])([:][-]*[\[\]()PpoOsS\{\}]{1})\."	"\g<1> <emotikon> \g<2> </emotikon> ."
+" ([:;]) ([\]\[()DPpoO}S]{1})."	" <emotikon> \g<1>\g<2> </emotikon> ."
+"(&gt_semikoolon_:) *([\[\]()Dp}S]+) "	" <emotikon> \g<1>\g<2> </emotikon> "
+"([;:]') *([\[\]()Dp}]+) "	" <emotikon> \g<1>\g<2> </emotikon> "
+" ([;:]'*)([\\]+) "	" <emotikon> \g<1>\g<2> </emotikon>"
+" ([\\/()SOo]+) *([:;]+) "	" <emotikon> \g<1>\g<2> </emotikon> "
+" ([;:][-=]*[/]+) "	" <emotikon> \g<1> </emotikon> "
+" ([;:][-= ]*[\\]+) "	" <emotikon> \g<1> </emotikon> "
+" ([.][()]+) "	" <emotikon> \g<1> </emotikon> "
+" () ([()\\/])"õ
+
+"([>]*[:8=xXB]+['-\^ocっ]*[cCD3<>{}\[\]()|]+) " " <emotikon> \g<1> </emotikon> "
